@@ -121,17 +121,7 @@ export function NewInvoicePage() {
     }
   };
 
-  const handleDownloadLastInvoicePdf = () => {
-    if (!lastCreatedInvoice) return;
-    const link = document.createElement('a');
-    link.href = invoicesApi.getPdfDownloadUrl(lastCreatedInvoice._id);
-    link.download = `${lastCreatedInvoice.invoiceNumber}.pdf`;
-    link.rel = 'noopener';
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+
 
   return (
 		<div className="flex flex-col gap-5">
@@ -299,19 +289,7 @@ export function NewInvoicePage() {
 								>
 									Save Invoice
 								</Button>
-								<Button
-									type={
-										lastCreatedInvoice
-											? "default"
-											: "dashed"
-									}
-									size="large"
-									className="!w-full"
-									onClick={handleDownloadLastInvoicePdf}
-									disabled={!lastCreatedInvoice}
-								>
-									Download Last Saved PDF
-								</Button>
+
 								<Button
 									size="large"
 									className="!w-full"
