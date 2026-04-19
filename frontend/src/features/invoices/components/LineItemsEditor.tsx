@@ -39,7 +39,7 @@ export function LineItemsEditor({
         return (
           <Card
             key={field.key}
-            className="!rounded-xl !border-slate-200"
+            className="panel-surface !mb-5 !rounded-xl !border-0 shadow-none"
             styles={{ body: { padding: 14 } }}
             title={`Line Item ${index + 1}`}
             extra={
@@ -174,7 +174,11 @@ export function LineItemsEditor({
               </Form.Item>
             </div>
 
-            <Space size={20} wrap className="mt-4 rounded-lg bg-slate-50 px-3 py-2">
+            <Space
+              size={20}
+              wrap
+              className="mt-4 rounded-lg border border-slate-200/70 bg-white/65 px-3 py-2"
+            >
               <Text type="secondary">
                 Subtotal: <Text strong>{formatCurrency(lineTotals.subtotalBeforeDiscount)}</Text>
               </Text>

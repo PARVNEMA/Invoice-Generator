@@ -134,168 +134,240 @@ export function NewInvoicePage() {
   };
 
   return (
-    <>
-      {contextHolder}
+		<div className="flex flex-col gap-5">
+			{contextHolder}
 
-      <PageHeader
-        eyebrow="Modules 2 & 3"
-        title="New Invoice"
-        description="Capture invoice metadata, customer details, and line items with live GST and discount calculations."
-      />
+			<PageHeader
+				title="New Invoice"
+				description="Capture invoice metadata, customer details, and line items with live GST and discount calculations."
+			/>
 
-      <Form form={form} layout="vertical" initialValues={initialValues}>
-        <div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
-          <div className="space-y-5 xl:col-span-2">
-            <SurfaceCard title="Invoice Metadata">
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                <Statistic title="Draft Invoice Number" value={draftInvoiceNumber} />
-                <Form.Item label="Current Date" className="!mb-0">
-                  <DatePicker value={today} disabled className="!w-full" format="DD MMM YYYY" />
-                </Form.Item>
-              </div>
-            </SurfaceCard>
+			<Form
+				form={form}
+				layout="vertical"
+				initialValues={initialValues}
+			>
+				<div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
+					<div className="space-y-5 xl:col-span-2">
+						<SurfaceCard
+							title="Invoice Metadata"
+							className="!mb-5"
+						>
+							<div className="grid grid-cols-1 gap-3 md:grid-cols-2 my-4">
+								<Statistic
+									title="Draft Invoice Number"
+									value={draftInvoiceNumber}
+								/>
+								<Form.Item
+									label="Current Date"
+									className="!mb-0"
+								>
+									<DatePicker
+										value={today}
+										disabled
+										className="!w-full"
+										format="DD MMM YYYY"
+									/>
+								</Form.Item>
+							</div>
+						</SurfaceCard>
 
-            <SurfaceCard title="Customer Details">
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                <Form.Item
-                  label="Full name"
-                  name="customerName"
-                  rules={[{ required: true, message: 'Please enter full name' }]}
-                  className="!mb-0"
-                >
-                  <Input size="large" placeholder="Customer full name" />
-                </Form.Item>
+						<SurfaceCard
+							title="Customer Details"
+							className="!mb-5"
+						>
+							<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+								<Form.Item
+									label="Full name"
+									name="customerName"
+									rules={[
+										{
+											required: true,
+											message: "Please enter full name",
+										},
+									]}
+									className="!mb-0"
+								>
+									<Input
+										size="large"
+										placeholder="Customer full name"
+									/>
+								</Form.Item>
 
-                <Form.Item
-                  label="Phone number"
-                  name="phone"
-                  rules={[{ required: true, message: 'Please enter phone number' }]}
-                  className="!mb-0"
-                >
-                  <Input size="large" placeholder="+91-XXXXXXXXXX" />
-                </Form.Item>
+								<Form.Item
+									label="Phone number"
+									name="phone"
+									rules={[
+										{
+											required: true,
+											message: "Please enter phone number",
+										},
+									]}
+									className="!mb-0"
+								>
+									<Input
+										size="large"
+										placeholder="+91-XXXXXXXXXX"
+									/>
+								</Form.Item>
 
-                <Form.Item
-                  label="Email ID"
-                  name="email"
-                  rules={[
-                    { required: true, message: 'Please enter email' },
-                    { type: 'email', message: 'Please enter a valid email' },
-                  ]}
-                  className="!mb-0"
-                >
-                  <Input size="large" placeholder="customer@example.com" />
-                </Form.Item>
+								<Form.Item
+									label="Email ID"
+									name="email"
+									rules={[
+										{
+											required: true,
+											message: "Please enter email",
+										},
+										{
+											type: "email",
+											message: "Please enter a valid email",
+										},
+									]}
+									className="!mb-0"
+								>
+									<Input
+										size="large"
+										placeholder="customer@example.com"
+									/>
+								</Form.Item>
 
-                <Form.Item
-                  label="Billing address"
-                  name="billingAddress"
-                  rules={[{ required: true, message: 'Please enter billing address' }]}
-                  className="!mb-0 md:col-span-2"
-                >
-                  <Input.TextArea
-                    autoSize={{ minRows: 3, maxRows: 5 }}
-                    placeholder="Full billing address"
-                  />
-                </Form.Item>
-              </div>
-            </SurfaceCard>
+								<Form.Item
+									label="Billing address"
+									name="billingAddress"
+									rules={[
+										{
+											required: true,
+											message:
+												"Please enter billing address",
+										},
+									]}
+									className="!mb-0 md:col-span-2"
+								>
+									<Input.TextArea
+										autoSize={{ minRows: 3, maxRows: 5 }}
+										placeholder="Full billing address"
+									/>
+								</Form.Item>
+							</div>
+						</SurfaceCard>
 
-            <SurfaceCard title="Line Items">
-              {itemsLoading ? (
-                <Skeleton active paragraph={{ rows: 8 }} />
-              ) : itemsError ? (
-                <Alert
-                  type="error"
-                  message="Unable to load items"
-                  description={itemsError}
-                  showIcon
-                />
-              ) : (
-                <Form.List name="lineItems">
-                  {(fields, { add, remove }) => (
-                    <LineItemsEditor
-                      form={form}
-                      fields={fields}
-                      add={add}
-                      remove={remove}
-                      items={items}
-                      lineItemsValues={lineItems}
-                    />
-                  )}
-                </Form.List>
-              )}
-            </SurfaceCard>
-          </div>
+						<SurfaceCard title="Line Items">
+							{itemsLoading ? (
+								<Skeleton active paragraph={{ rows: 8 }} />
+							) : itemsError ? (
+								<Alert
+									type="error"
+									message="Unable to load items"
+									description={itemsError}
+									showIcon
+								/>
+							) : (
+								<Form.List name="lineItems">
+									{(fields, { add, remove }) => (
+										<LineItemsEditor
+											form={form}
+											fields={fields}
+											add={add}
+											remove={remove}
+											items={items}
+											lineItemsValues={lineItems}
+										/>
+									)}
+								</Form.List>
+							)}
+						</SurfaceCard>
+					</div>
 
-          <div className="space-y-5">
-            <InvoiceSummaryCard totals={totals} />
+					<div className="space-y-5">
+						<InvoiceSummaryCard totals={totals} />
 
-            <div className="panel-surface rounded-2xl p-4">
-              <Space direction="vertical" className="w-full">
-                <Button
-                  type="primary"
-                  size="large"
-                  className="!w-full !font-semibold"
-                  loading={saveLoading}
-                  onClick={() => void handleSaveInvoice()}
-                  disabled={itemsLoading || Boolean(itemsError)}
-                >
-                  Save Invoice
-                </Button>
-                <Button
-                  type={lastCreatedInvoice ? 'default' : 'dashed'}
-                  size="large"
-                  className="!w-full"
-                  onClick={handleDownloadLastInvoicePdf}
-                  disabled={!lastCreatedInvoice}
-                >
-                  Download Last Saved PDF
-                </Button>
-                <Button
-                  size="large"
-                  className="!w-full"
-                  onClick={() => navigate('/invoices')}
-                >
-                  Go to Invoice History
-                </Button>
-                <Button
-                  size="large"
-                  className="!w-full"
-                  onClick={() => {
-                    form.resetFields();
-                    form.setFieldValue('lineItems', [createEmptyLineItem()]);
-                  }}
-                >
-                  Reset Form
-                </Button>
-              </Space>
-            </div>
+						<div className="panel-surface rounded-2xl p-4">
+							<Space
+								direction="vertical"
+								className="w-full"
+							>
+								<Button
+									type="primary"
+									size="large"
+									className="!w-full !font-semibold"
+									loading={saveLoading}
+									onClick={() => void handleSaveInvoice()}
+									disabled={
+										itemsLoading || Boolean(itemsError)
+									}
+								>
+									Save Invoice
+								</Button>
+								<Button
+									type={
+										lastCreatedInvoice
+											? "default"
+											: "dashed"
+									}
+									size="large"
+									className="!w-full"
+									onClick={handleDownloadLastInvoicePdf}
+									disabled={!lastCreatedInvoice}
+								>
+									Download Last Saved PDF
+								</Button>
+								<Button
+									size="large"
+									className="!w-full"
+									onClick={() => navigate("/invoices")}
+								>
+									Go to Invoice History
+								</Button>
+								<Button
+									size="large"
+									className="!w-full"
+									onClick={() => {
+										form.resetFields();
+										form.setFieldValue("lineItems", [
+											createEmptyLineItem(),
+										]);
+									}}
+								>
+									Reset Form
+								</Button>
+							</Space>
+						</div>
 
-            {lastCreatedInvoice ? (
-              <div className="panel-surface rounded-2xl p-4">
-                <div className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
-                  Last Saved Invoice
-                </div>
-                <div className="space-y-2 text-sm text-slate-700">
-                  <div>
-                    Number: <span className="font-semibold">{lastCreatedInvoice.invoiceNumber}</span>
-                  </div>
-                  <div>
-                    Date: <span className="font-semibold">{formatDateTime(lastCreatedInvoice.invoiceDate)}</span>
-                  </div>
-                  <div>
-                    Grand Total:{' '}
-                    <span className="font-semibold">
-                      {formatCurrency(lastCreatedInvoice.grandTotal)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </Form>
-    </>
-  );
+						{lastCreatedInvoice ? (
+							<div className="panel-surface rounded-2xl p-4">
+								<div className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+									Last Saved Invoice
+								</div>
+								<div className="space-y-2 text-sm text-slate-700">
+									<div>
+										Number:{" "}
+										<span className="font-semibold">
+											{lastCreatedInvoice.invoiceNumber}
+										</span>
+									</div>
+									<div>
+										Date:{" "}
+										<span className="font-semibold">
+											{formatDateTime(
+												lastCreatedInvoice.invoiceDate,
+											)}
+										</span>
+									</div>
+									<div>
+										Grand Total:{" "}
+										<span className="font-semibold">
+											{formatCurrency(
+												lastCreatedInvoice.grandTotal,
+											)}
+										</span>
+									</div>
+								</div>
+							</div>
+						) : null}
+					</div>
+				</div>
+			</Form>
+		</div>
+	);
 }

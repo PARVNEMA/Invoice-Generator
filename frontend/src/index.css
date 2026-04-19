@@ -29,11 +29,17 @@ body {
   min-height: 100vh;
 }
 
-.panel-surface {
+.panel-surface,
+.panel-surface.ant-card {
   backdrop-filter: blur(10px);
-  background: var(--panel);
-  border: 1px solid var(--panel-border);
+  background: var(--panel) !important;
+  border: 1px solid var(--panel-border) !important;
   box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
+}
+
+.panel-surface.ant-card .ant-card-head,
+.panel-surface.ant-card .ant-card-body {
+  background: transparent !important;
 }
 
 .ant-layout-sider-zero-width-trigger {

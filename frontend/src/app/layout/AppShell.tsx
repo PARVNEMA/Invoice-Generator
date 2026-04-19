@@ -13,42 +13,51 @@ export function AppShell() {
     }`;
 
   return (
-    <Layout className="min-h-screen bg-transparent">
-      <Sider
-        breakpoint="lg"
-        collapsedWidth={0}
-        width={260}
-        className="!bg-transparent !p-4 lg:!p-6"
-      >
-        <div className="panel-surface h-full rounded-2xl p-5 lg:p-6">
-          <div className="mb-8">
-            <Text className="text-xs font-semibold uppercase tracking-[0.24em] !text-slate-500">
-              Invoice Generator
-            </Text>
-            <Title level={3} className="!mb-0 !mt-2 !text-slate-900">
-              Workspace
-            </Title>
-          </div>
+		<Layout className="min-h-screen bg-transparent">
+			<Sider
+				breakpoint="lg"
+				collapsedWidth={0}
+				width={260}
+				className="bg-transparent! p-4! lg:p-6!"
+			>
+				<div className="panel-surface h-full rounded-2xl p-5 lg:p-6">
+					<div className="mb-8">
+						<Text className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500!">
+							Invoice Generator
+						</Text>
+						<Title
+							level={3}
+							className="mb-0! mt-2! text-slate-900!"
+						>
+							Workspace
+						</Title>
+					</div>
 
-          <nav className="space-y-2">
-            <NavLink to="/items" className={navLinkClass}>
-              Item & Inventory
-            </NavLink>
-            <NavLink to="/invoices/new" className={navLinkClass}>
-              New Invoice
-            </NavLink>
-            <NavLink to="/invoices" className={navLinkClass}>
-              Invoice History
-            </NavLink>
-          </nav>
-        </div>
-      </Sider>
+					<nav className="space-y-2">
+						<NavLink to="/items" className={navLinkClass}>
+							Item & Inventory
+						</NavLink>
+						<NavLink
+							to="/invoices/new"
+							className={navLinkClass}
+						>
+							New Invoice
+						</NavLink>
+						<NavLink
+							to="/invoices/history"
+							className={navLinkClass}
+						>
+							Invoice History
+						</NavLink>
+					</nav>
+				</div>
+			</Sider>
 
-      <Content className="p-4 lg:p-8">
-        <div className="mx-auto w-full max-w-7xl">
-          <Outlet />
-        </div>
-      </Content>
-    </Layout>
-  );
+			<Content className="p-4 lg:p-8">
+				<div className="mx-auto w-full max-w-7xl">
+					<Outlet />
+				</div>
+			</Content>
+		</Layout>
+	);
 }

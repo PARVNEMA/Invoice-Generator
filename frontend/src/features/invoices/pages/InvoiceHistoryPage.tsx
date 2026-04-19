@@ -121,44 +121,57 @@ export function InvoiceHistoryPage() {
   ];
 
   return (
-    <>
-      {contextHolder}
-      <PageHeader
-        eyebrow="Module 5"
-        title="Invoice History"
-        description="Track all generated invoices with quick PDF download and cleanup actions."
-      />
+		<>
+			{contextHolder}
+			<PageHeader
+				title="Invoice History"
+				description="Track all generated invoices with quick PDF download and cleanup actions."
+			/>
 
-      <div className="mb-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <SurfaceCard>
-          <Statistic title="Total Invoices" value={invoices.length} />
-        </SurfaceCard>
-        <SurfaceCard>
-          <Statistic title="Total Revenue" value={formatCurrency(totalRevenue)} />
-        </SurfaceCard>
-      </div>
+			<div className="mb-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+				<SurfaceCard>
+					<Statistic
+						title="Total Invoices"
+						value={invoices.length}
+					/>
+				</SurfaceCard>
+				<SurfaceCard>
+					<Statistic
+						title="Total Revenue"
+						value={formatCurrency(totalRevenue)}
+					/>
+				</SurfaceCard>
+			</div>
 
-      <SurfaceCard title="Generated Invoices">
-        {loading ? (
-          <div className="flex min-h-64 items-center justify-center">
-            <Spin size="large" />
-          </div>
-        ) : error ? (
-          <Alert type="error" message="Unable to load invoices" description={error} showIcon />
-        ) : invoices.length === 0 ? (
-          <div className="py-14">
-            <Empty description="No invoices generated yet." />
-          </div>
-        ) : (
-          <Table
-            rowKey="_id"
-            dataSource={invoices}
-            columns={columns}
-            pagination={{ pageSize: 8, showSizeChanger: false }}
-            scroll={{ x: 880 }}
-          />
-        )}
-      </SurfaceCard>
-    </>
-  );
+			<SurfaceCard title="Generated Invoices">
+				{loading ? (
+					<div className="flex min-h-64 items-center justify-center">
+						<Spin size="large" />
+					</div>
+				) : error ? (
+					<Alert
+						type="error"
+						message="Unable to load invoices"
+						description={error}
+						showIcon
+					/>
+				) : invoices.length === 0 ? (
+					<div className="py-14">
+						<Empty description="No invoices generated yet." />
+					</div>
+				) : (
+					<Table
+						rowKey="_id"
+						dataSource={invoices}
+						columns={columns}
+						pagination={{
+							pageSize: 8,
+							showSizeChanger: false,
+						}}
+						scroll={{ x: 880 }}
+					/>
+				)}
+			</SurfaceCard>
+		</>
+	);
 }
