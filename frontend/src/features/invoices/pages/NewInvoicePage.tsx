@@ -11,8 +11,10 @@ import {
   message,
 } from 'antd';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 import { PageHeader } from '../../../shared/ui/PageHeader';
 import { SurfaceCard } from '../../../shared/ui/SurfaceCard';
+import { formatCurrency, formatDateTime } from '../../../shared/lib/format';
 import { itemsApi } from '../../items/api/itemsApi';
 import type { Item } from '../../items/types';
 import { invoicesApi } from '../api/invoicesApi';
@@ -20,7 +22,12 @@ import { InvoiceSummaryCard } from '../components/InvoiceSummaryCard';
 import { LineItemsEditor } from '../components/LineItemsEditor';
 import { calculateInvoiceTotals } from '../lib/calculations';
 import { createEmptyLineItem } from '../lib/lineItemFactory';
-import type { CreateInvoicePayload, InvoiceFormValues, InvoiceLineItemPayload } from '../types';
+import type {
+  CreateInvoicePayload,
+  CreatedInvoice,
+  InvoiceFormValues,
+  InvoiceLineItemPayload,
+} from '../types';
 
 const createDraftInvoiceNumber = () => {
   const dateChunk = dayjs().format('YYYYMMDD');
@@ -37,6 +44,7 @@ const initialValues: InvoiceFormValues = {
 };
 
 export function NewInvoicePage() {
+  const navigate = useNavigate();
   const [form] = Form.useForm<InvoiceFormValues>();
   const watchedLineItems = Form.useWatch('lineItems', form);
   const lineItems = useMemo(() => watchedLineItems ?? [], [watchedLineItems]);
@@ -46,6 +54,7 @@ export function NewInvoicePage() {
   const [itemsError, setItemsError] = useState<string | null>(null);
   const [saveLoading, setSaveLoading] = useState(false);
   const [draftInvoiceNumber, setDraftInvoiceNumber] = useState(createDraftInvoiceNumber);
+  const [lastCreatedInvoice, setLastCreatedInvoice] = useState<CreatedInvoice | null>(null);
   const [messageApi, contextHolder] = message.useMessage();
 
   const totals = useMemo(() => calculateInvoiceTotals(lineItems), [lineItems]);
@@ -99,6 +108,7 @@ export function NewInvoicePage() {
 
       setSaveLoading(true);
       const createdInvoice = await invoicesApi.create(toPayload(values));
+      setLastCreatedInvoice(createdInvoice);
       messageApi.success(`Invoice ${createdInvoice.invoiceNumber} created successfully.`);
       form.resetFields();
       form.setFieldValue('lineItems', [createEmptyLineItem()]);
@@ -109,6 +119,18 @@ export function NewInvoicePage() {
     } finally {
       setSaveLoading(false);
     }
+  };
+
+  const handleDownloadLastInvoicePdf = () => {
+    if (!lastCreatedInvoice) return;
+    const link = document.createElement('a');
+    link.href = invoicesApi.getPdfDownloadUrl(lastCreatedInvoice._id);
+    link.download = `${lastCreatedInvoice.invoiceNumber}.pdf`;
+    link.rel = 'noopener';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -222,6 +244,22 @@ export function NewInvoicePage() {
                   Save Invoice
                 </Button>
                 <Button
+                  type={lastCreatedInvoice ? 'default' : 'dashed'}
+                  size="large"
+                  className="!w-full"
+                  onClick={handleDownloadLastInvoicePdf}
+                  disabled={!lastCreatedInvoice}
+                >
+                  Download Last Saved PDF
+                </Button>
+                <Button
+                  size="large"
+                  className="!w-full"
+                  onClick={() => navigate('/invoices')}
+                >
+                  Go to Invoice History
+                </Button>
+                <Button
                   size="large"
                   className="!w-full"
                   onClick={() => {
@@ -233,6 +271,28 @@ export function NewInvoicePage() {
                 </Button>
               </Space>
             </div>
+
+            {lastCreatedInvoice ? (
+              <div className="panel-surface rounded-2xl p-4">
+                <div className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+                  Last Saved Invoice
+                </div>
+                <div className="space-y-2 text-sm text-slate-700">
+                  <div>
+                    Number: <span className="font-semibold">{lastCreatedInvoice.invoiceNumber}</span>
+                  </div>
+                  <div>
+                    Date: <span className="font-semibold">{formatDateTime(lastCreatedInvoice.invoiceDate)}</span>
+                  </div>
+                  <div>
+                    Grand Total:{' '}
+                    <span className="font-semibold">
+                      {formatCurrency(lastCreatedInvoice.grandTotal)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       </Form>

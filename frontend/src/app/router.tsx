@@ -3,6 +3,7 @@ import { AppShell } from './layout/AppShell';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { ItemsPage } from '../features/items/pages/ItemsPage';
 import { NewInvoicePage } from '../features/invoices/pages/NewInvoicePage';
+import { InvoiceHistoryPage } from '../features/invoices/pages/InvoiceHistoryPage';
 
 export const appRouter = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const appRouter = createBrowserRouter([
       {
         path: 'invoices/new',
         element: <NewInvoicePage />,
+      },
+      {
+        path: 'invoices',
+        element: <InvoiceHistoryPage />,
       },
     ],
   },

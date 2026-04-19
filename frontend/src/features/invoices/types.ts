@@ -43,10 +43,19 @@ export type CreateInvoicePayload = {
 export type CreatedInvoice = {
   _id: string;
   invoiceNumber: string;
+  customerName: string;
   invoiceDate: string;
   dueDate: string;
   subtotal: number;
   totalDiscount: number;
   totalGST: number;
+  grandTotal: number;
+};
+
+export type InvoiceListItem = {
+  _id: string;
+  invoiceNumber: string;
+  customerName: string;
+  invoiceDate: string;
   grandTotal: number;
 };

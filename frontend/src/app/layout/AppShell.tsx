@@ -37,6 +37,9 @@ export function AppShell() {
             <NavLink to="/invoices/new" className={navLinkClass}>
               New Invoice
             </NavLink>
+            <NavLink to="/invoices" className={navLinkClass}>
+              Invoice History
+            </NavLink>
           </nav>
         </div>
       </Sider>
